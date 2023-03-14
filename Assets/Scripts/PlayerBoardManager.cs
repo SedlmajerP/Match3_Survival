@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Xml.Linq;
 
 public class PlayerBoardManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerBoardManager : MonoBehaviour
 	//[SerializeField]	private		List<GameObject>	enemyList;
 	[SerializeField]	private		MatchManager		matchManager;
 	[SerializeField]	private		ShootingManager		shootingManager;
+	[SerializeField]	private		TrAnimations		animations;
+
 	
 
 						public		int					width = 6;
@@ -75,9 +78,11 @@ public class PlayerBoardManager : MonoBehaviour
 		if (allElementsArray[column, row].GetComponent<PlayerControls>().isMatched)
 		{
 
+
 			matchManager.matchCounter.Remove(allElementsArray[column, row]);
 			Destroy(allElementsArray[column, row]);
 			allElementsArray[column, row] = null;
+
 		}
 	}
 
@@ -102,7 +107,7 @@ public class PlayerBoardManager : MonoBehaviour
 	
 	private IEnumerator FillTheBoardCor()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.1f);
 
 		CollapseRow();
 
@@ -110,15 +115,17 @@ public class PlayerBoardManager : MonoBehaviour
 
 		RefillElements();
 
-		yield return new WaitForSeconds(0.01f);
+		yield return new WaitForSeconds(0.3f);
 
 
 		while (IsMatchedAt())
 		{
 			shootingManager.ShootThem();
 
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.9f);
 
+			animations.PlayDestroyAnim();
+			yield return new WaitForSeconds(0.6f);
 			DestroyAllMatches();
 		}
 	}
@@ -161,6 +168,9 @@ public class PlayerBoardManager : MonoBehaviour
 					newElement.GetComponent<PlayerControls>().column = x;
 					newElement.GetComponent<PlayerControls>().row = y;
 					allElementsArray[x, y] = newElement;
+					Transform newEleTransform = newElement.GetComponent<Transform>();
+					newEleTransform.localScale = new Vector2(0, 0);
+					animations.PlayRefillAnim(newEleTransform);
 
 				}
 			}

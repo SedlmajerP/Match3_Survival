@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-	
+	private TrAnimations destroyAnimation;
 
 	private PlayerBoardManager pBoardManager;
 	private MatchManager matchManager;
@@ -31,16 +31,23 @@ public class PlayerControls : MonoBehaviour
 	private int objectOrigPosX;
 	private int objectOrigPosY;
 	public bool isMatched = false;
-	
-	
 
-	private void Start()
+	private void Awake()
 	{
-
 		pBoardManager = FindObjectOfType<PlayerBoardManager>();
 		matchManager = FindObjectOfType<MatchManager>();
 		shootingManager = FindObjectOfType<ShootingManager>();
+		destroyAnimation = FindObjectOfType<TrAnimations>();
 	}
+
+	//private void Start()
+	//{
+
+	//	pBoardManager = FindObjectOfType<PlayerBoardManager>();
+	//	matchManager = FindObjectOfType<MatchManager>();
+	//	shootingManager = FindObjectOfType<ShootingManager>();
+	//	destroyAnimation = GetComponent<DestroyAnimation>();
+	//}
 
 	private void Update()
 	{
@@ -168,7 +175,7 @@ public class PlayerControls : MonoBehaviour
 
 	IEnumerator CheckMachCor()
 	{
-		yield return new WaitForSeconds(0.01f);
+		yield return new WaitForSeconds(0.1f);
 		if(otherElement != null)
 		{
 			if (!isMatched && !otherElement.GetComponent<PlayerControls>().isMatched)
@@ -181,7 +188,9 @@ public class PlayerControls : MonoBehaviour
 			else
 			{
 				shootingManager.ShootThem();
-				yield return new WaitForSeconds(1f);
+				yield return new WaitForSeconds(0.9f);
+				destroyAnimation.PlayDestroyAnim();
+				yield return new WaitForSeconds(0.6f);
 				pBoardManager.DestroyAllMatches();
 
 			}
