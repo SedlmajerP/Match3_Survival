@@ -11,7 +11,7 @@ public class PlayerControls : MonoBehaviour
 	private MatchManager matchManager;
 	private ShootingManager shootingManager;
 	private GameObject otherElement;
-	
+
 	//SpriteRenderer mySprite;
 	Color defaultColor;
 
@@ -23,7 +23,7 @@ public class PlayerControls : MonoBehaviour
 
 	private float dragAngle = 0;
 	private float minimalDrag = 1f;
-	private float movingSpeed = 9f;
+	public float movingSpeed = 15f;
 	public int column;
 	public int row;
 	private int previousColumn;
@@ -51,8 +51,8 @@ public class PlayerControls : MonoBehaviour
 
 	private void Update()
 	{
-		
-		
+
+
 		MovingElements();
 		matchManager.GetMatches();
 
@@ -60,8 +60,11 @@ public class PlayerControls : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		transform.localScale = enlarge;
-		mouseDownPosition = GetMousePosition();
+		if (GameManager.Instance.currentState == GameManager.GameState.PlayerTurn)
+		{
+			transform.localScale = enlarge;
+			mouseDownPosition = GetMousePosition();
+		}
 	}
 
 	private Vector2 GetMousePosition()
@@ -71,9 +74,15 @@ public class PlayerControls : MonoBehaviour
 
 	private void OnMouseUp()
 	{
+
+
 		mouseUpPos = GetMousePosition();
 		transform.localScale = defaultSize;
-		CalculateAngle();
+		if (pBoardManager.elementsMoving == false)
+		{
+			CalculateAngle();
+		}
+
 	}
 
 	private void MovingElements()
@@ -86,7 +95,7 @@ public class PlayerControls : MonoBehaviour
 			tempPos = new Vector2(transform.localPosition.x, objectOrigPosY);
 			transform.localPosition = Vector2.Lerp(transform.localPosition, tempPos, movingSpeed * Time.deltaTime);
 
-			if(pBoardManager.allElementsArray[column,row] != this.gameObject)
+			if (pBoardManager.allElementsArray[column, row] != this.gameObject)
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
@@ -95,7 +104,7 @@ public class PlayerControls : MonoBehaviour
 		{
 			tempPos = new Vector2(transform.localPosition.x, objectOrigPosY);
 			transform.localPosition = tempPos;
-			
+
 
 		}
 		if (Mathf.Abs(objectOrigPosX - transform.localPosition.x) > 0.1f)
@@ -107,16 +116,16 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
-			
+
 		}
 		else
 
 		{
 			tempPos = new Vector2(objectOrigPosX, transform.localPosition.y);
 			transform.localPosition = tempPos;
-			
+
 		}
-		
+
 
 	}
 
@@ -125,14 +134,14 @@ public class PlayerControls : MonoBehaviour
 		if (Mathf.Abs(mouseUpPos.x - mouseDownPosition.x) > minimalDrag || Mathf.Abs(mouseUpPos.y - mouseDownPosition.y) > minimalDrag)
 		{
 			dragAngle = Mathf.Atan2(mouseUpPos.y - mouseDownPosition.y, mouseUpPos.x - mouseDownPosition.x) * 180 / Mathf.PI;
-			MovingLogic(); 
+			MovingLogic();
 		}
 	}
 
 	private void MovingLogic()
 	{
 
-		if (dragAngle > 45 && dragAngle < 135 && row < pBoardManager.height-1)
+		if (dragAngle > 45 && dragAngle < 135 && row < pBoardManager.height - 1)
 		{
 			otherElement = pBoardManager.allElementsArray[column, row + 1];
 			previousColumn = column;
@@ -160,7 +169,7 @@ public class PlayerControls : MonoBehaviour
 			column -= 1;
 			//LEFT
 		}
-		else if (dragAngle > -45 && dragAngle < 45 && column < pBoardManager.width-1)
+		else if (dragAngle > -45 && dragAngle < 45 && column < pBoardManager.width - 1)
 		{
 			otherElement = pBoardManager.allElementsArray[column + 1, row];
 			previousColumn = column;
@@ -169,14 +178,14 @@ public class PlayerControls : MonoBehaviour
 			column += 1;
 			//RIGHT
 		}
-		
+		pBoardManager.elementsMoving = true;
 		StartCoroutine(CheckMachCor());
 	}
 
 	IEnumerator CheckMachCor()
 	{
-		yield return new WaitForSeconds(0.1f);
-		if(otherElement != null)
+		yield return new WaitForSeconds(0.2f);
+		if (otherElement != null)
 		{
 			if (!isMatched && !otherElement.GetComponent<PlayerControls>().isMatched)
 			{
@@ -184,23 +193,31 @@ public class PlayerControls : MonoBehaviour
 				otherElement.GetComponent<PlayerControls>().column = column;
 				row = previousRow;
 				column = previousColumn;
+				pBoardManager.elementsMoving = false;
 			}
 			else
 			{
-				shootingManager.ShootThem();
-				yield return new WaitForSeconds(0.9f);
+				//shootingManager.ShootThem();
+				yield return new WaitForSeconds(0.2f);
+
+				shootingManager.ShootThemDEBUG();
+
+				yield return new WaitForSeconds(0.1f);
+
 				destroyAnimation.PlayDestroyAnim();
+
 				yield return new WaitForSeconds(0.6f);
+
 				pBoardManager.DestroyAllMatches();
 
 			}
 			yield return new WaitForSeconds(0.1f);
-			
-			
+
+
 		}
 		otherElement = null;
 	}
 
 
-	
+
 }

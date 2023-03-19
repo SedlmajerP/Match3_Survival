@@ -20,7 +20,7 @@ public class TrAnimations : MonoBehaviour
                     {
                         elementTranform.DOScale(1, 0.2f).OnComplete(() =>
                         {
-                            elementTranform.DOScale(0, 0.3f);
+                            elementTranform.DOScale(0, 0.2f);
                         });
                     }
                 }
@@ -31,9 +31,9 @@ public class TrAnimations : MonoBehaviour
 
     public void PlayRefillAnim(Transform newElementTransform)
     {
-		newElementTransform.DOScale(1, 0.3f).OnComplete(() =>
+		newElementTransform.DOScale(1, 0.2f).OnComplete(() =>
         {
-			newElementTransform.DOScale(0.8f, 0.2f);
+			newElementTransform.DOScale(0.8f, 0.1f);
         });
     }
 }

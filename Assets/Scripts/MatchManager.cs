@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class MatchManager : MonoBehaviour
 {
-	private PlayerBoardManager pBoardManager;
+	[SerializeField] private PlayerBoardManager pBoardManager;
 	public List<GameObject> matchCounter = new List<GameObject>();
 
 
-	private void Awake()
-	{
-		pBoardManager = FindObjectOfType<PlayerBoardManager>();
-	}
+	
 
 	public void GetMatches()
 	{

@@ -12,6 +12,9 @@ TagManager:
   - NatureProjectile
   - EarthProjectile
   - Earth
+  - EnemyBasic
+  - EnemyJumping
+  - EnemyShooting
   layers:
   - Default
   - TransparentFX
@@ -48,6 +51,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 3029701121
+    locked: 0
+  - name: BGTile
+    uniqueID: 457737311
     locked: 0
   - name: Element
     uniqueID: 4248154261
