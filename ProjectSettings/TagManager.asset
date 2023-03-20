@@ -15,6 +15,7 @@ TagManager:
   - EnemyBasic
   - EnemyJumping
   - EnemyShooting
+  - JumpingEnemyProjectile
   layers:
   - Default
   - TransparentFX

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class ElementProjectile : MonoBehaviour
 {
 	[SerializeField] private Rigidbody2D projectileRb;
 	private HealthBar healthBar;

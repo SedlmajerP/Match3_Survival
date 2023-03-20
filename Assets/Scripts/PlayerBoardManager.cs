@@ -127,7 +127,7 @@ public class PlayerBoardManager : MonoBehaviour
 			//shootingManager.ShootThem();
 			yield return new WaitForSeconds(0.2f);
 
-			shootingManager.ShootThemDEBUG();
+			shootingManager.ShootElemets();
 
 			//yield return new WaitForSeconds(0.2f);
 

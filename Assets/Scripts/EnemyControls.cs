@@ -8,6 +8,7 @@ using UnityEngine;
 public class EnemyControls : MonoBehaviour
 {
 	[SerializeField] private HealthBar healthBar;
+	private ShootingManager shootingManager;
 	private EnemyBoardManager eBoardManager;
 	public int column;
 	public int row;
@@ -17,6 +18,7 @@ public class EnemyControls : MonoBehaviour
 	private void Awake()
 	{
 		eBoardManager = FindObjectOfType<EnemyBoardManager>();
+		shootingManager = FindObjectOfType<ShootingManager>();
 		health = eBoardManager.enemyMaxHealth;
 
 	}
@@ -30,7 +32,7 @@ public class EnemyControls : MonoBehaviour
 	private IEnumerator MoveAll()
 	{
 		MoveBasicEnemy();
-		//yield return new WaitForSeconds(0.6f);
+		shootingManager.JumpingEnemyShoot(this.gameObject);
 		MoveJumpingEnemy();
 		yield break;
 	}

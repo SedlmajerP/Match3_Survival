@@ -1019,8 +1019,9 @@ MonoBehaviour:
   - {fileID: 5829783313777933782, guid: 53f273ea07ecbe843915a0f673af0a32, type: 3}
   - {fileID: 160271872479368495, guid: 3b031fb0d2633c540aa5538943dd11af, type: 3}
   - {fileID: 4043781938200374211, guid: 8e9751c4c14f4b3418e684d964b0627a, type: 3}
-  myTransform: {fileID: 1914957296}
+  jumpEnemyProjectile: {fileID: 4737432984453761324, guid: c1f65e09f4a11d7488fb1c1817bb054a, type: 3}
   pBoardManager: {fileID: 479785902}
+  enemyBoardManager: {fileID: 1946993114}
   fireDamage: 50
   iceDamage: 30
   natureDamage: 30
