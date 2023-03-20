@@ -128,7 +128,11 @@ public class EnemyControls : MonoBehaviour
 				row = (int)jumpingEnemyNextPos.y;
 				Debug.Log(jumpingEnemyNextPos);
 				eBoardManager.allEnemyArray[column, row] = this.gameObject;
-				transform.DOLocalMove(jumpingEnemyNextPos, 0.5f);
+				transform.DOLocalMove(jumpingEnemyNextPos, 0.8f);
+				transform.DOScale(1.5f, 0.4f).OnComplete(() =>
+				{
+					transform.DOScale(0.9f, 0.4f);
+				});
 
 				if (row == 0)
 				{
