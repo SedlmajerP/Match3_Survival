@@ -27,9 +27,6 @@ public class EnemyBoardManager : MonoBehaviour
 		tempEnemyPosArr = new GameObject[width, height];
 	}
 	
-	
-
-
 
 	public void GenerateBackGroundTiles()
 	{
@@ -44,19 +41,17 @@ public class EnemyBoardManager : MonoBehaviour
 		}
 	}
 
-
-
 	public void GenerateFirstEnemies(int enemiesThisTurn = 1)
 	{
-		if (enemiesThisTurn <= width - 1)
+		if (enemiesThisTurn <= width)
 		{
 			for (int x = 0; x < enemiesThisTurn; x++)
 			{
-				int randomColumn = Random.Range(0, width - 1);
+				int randomColumn = Random.Range(0, width);
 				int randomIndex = Random.Range(0, enemyList.Count);
 				while (allEnemyArray[randomColumn,height-1] != null)
 				{
-					randomColumn = Random.Range(0, width - 1);
+					randomColumn = Random.Range(1, width);
 				}
 				
 				Vector3 spawnLoacation = new Vector3(randomColumn, height - 1, 0) + enemyBoard.transform.position;
@@ -68,18 +63,11 @@ public class EnemyBoardManager : MonoBehaviour
 				allEnemyArray[randomColumn, height-1] = spawnedEnemy;
 				Transform spawnedEnemyTr = spawnedEnemy.GetComponent<Transform>();
 				spawnedEnemyTr.localScale = new Vector2(0, 0);
-				trAnimations.PlayRefillAnim(spawnedEnemyTr);
+				trAnimations.PlaySpawnAnim(spawnedEnemyTr);
 
 			}
 		}
 	}
-
-	public void WaveOfEnemies()
-	{
-		return;
-	}
-	
-
 
 	public void MoveAllEnemies()
 	{

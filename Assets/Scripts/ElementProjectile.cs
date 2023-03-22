@@ -46,7 +46,7 @@ public class ElementProjectile : MonoBehaviour
 				Destroy(enemy.gameObject);
 			}
 			int maxHealth = FindObjectOfType<EnemyBoardManager>().enemyMaxHealth;
-			healthBar.UpdateHealthBar(enemyControls.health, maxHealth);
+			healthBar.UpdateHealthBar(enemyControls.health,maxHealth);
 		}
 	}
 	//private void OnCollisionEnter2D(Collision2D enemy)

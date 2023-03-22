@@ -11,18 +11,20 @@ public class PlayerBoardManager : MonoBehaviour
 {
 	[SerializeField] private GameObject playerBoard;
 	[SerializeField] private List<GameObject> elementList;
-	//[SerializeField]	private		GameObject			enemyBoard;
-	//[SerializeField]	private		List<GameObject>	enemyList;
 	[SerializeField] private MatchManager matchManager;
 	[SerializeField] private ShootingManager shootingManager;
 	[SerializeField] private TrAnimations animations;
 	[SerializeField] private EnemyBoardManager eBoardManager;
-	[SerializeField] public bool elementsMoving = false;
+	[SerializeField] private HealthBar healthBar;
+	[SerializeField] private int healAmount = 5;
+	[SerializeField] private WavesText wavesText;
+	public bool elementsMoving = false;
 
 
 
 	public int width = 6;
 	public int height = 6;
+
 
 	public GameObject[,] allElementsArray;
 
@@ -55,8 +57,6 @@ public class PlayerBoardManager : MonoBehaviour
 				allElementsArray[x, y] = spawnedTile;
 			}
 		}
-
-
 	}
 
 	private bool MatchesAt(int column, int row, GameObject element) //For starting with NO MATCHES in GeneratePlayerBoard()
@@ -82,12 +82,9 @@ public class PlayerBoardManager : MonoBehaviour
 	{
 		if (allElementsArray[column, row].GetComponent<PlayerControls>().isMatched)
 		{
-
-
 			matchManager.matchCounter.Remove(allElementsArray[column, row]);
 			Destroy(allElementsArray[column, row]);
 			allElementsArray[column, row] = null;
-
 		}
 	}
 
@@ -105,7 +102,6 @@ public class PlayerBoardManager : MonoBehaviour
 			}
 		}
 		StartCoroutine(FillTheBoardCor());
-
 	}
 
 
@@ -124,13 +120,11 @@ public class PlayerBoardManager : MonoBehaviour
 		while (IsMatchedAt())
 		{
 			elementsMoving = true;
-			//shootingManager.ShootThem();
+
 			yield return new WaitForSeconds(0.2f);
 
+			HealedByNature();
 			shootingManager.ShootElemets();
-
-			//yield return new WaitForSeconds(0.2f);
-
 			animations.PlayDestroyAnim();
 
 			yield return new WaitForSeconds(0.5f);
@@ -145,24 +139,21 @@ public class PlayerBoardManager : MonoBehaviour
 
 		yield return new WaitForSeconds(0.2f);
 
-
 		GameManager.Instance.currentState = GameManager.GameState.EnemyTurn;
 
 		yield return new WaitForSeconds(0.2f);
 
-		//eBoardManager.allEnemiesAttack();
-
-		//yield return new WaitForSeconds(0.5f);
-
 		eBoardManager.MoveAllEnemies();
-		//eBoardManager.resetTempEnemyPosArr();
 
-		yield return new WaitForSeconds(2.6f);
-
+		yield return new WaitForSeconds(2.8f);
 
 		eBoardManager.GenerateFirstEnemies(3);
 
+
+
 		yield return new WaitForSeconds(0.6f);
+		GameManager.Instance.numWaves++;
+		wavesText.UpdateWavesText();
 
 		GameManager.Instance.currentState = GameManager.GameState.PlayerTurn;
 		elementsMoving = false;
@@ -209,7 +200,7 @@ public class PlayerBoardManager : MonoBehaviour
 					allElementsArray[x, y] = newElement;
 					Transform newEleTransform = newElement.GetComponent<Transform>();
 					newEleTransform.localScale = new Vector2(0, 0);
-					animations.PlayRefillAnim(newEleTransform);
+					animations.PlaySpawnAnim(newEleTransform);
 
 				}
 			}
@@ -231,21 +222,50 @@ public class PlayerBoardManager : MonoBehaviour
 		return false;
 	}
 
+	public void HealedByNature()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (allElementsArray[x, y].GetComponent<PlayerControls>().isMatched && allElementsArray[x, y].CompareTag("Nature"))
+				{
+					int missingHelth = GameManager.Instance.playerMaxHealth - GameManager.Instance.playerHealth;
+					if (missingHelth >= healAmount)
+					{
+						GameManager.Instance.playerHealth += healAmount;
+						healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth);
+					}
+					else if (missingHelth < healAmount && missingHelth != 0)
+					{
+						GameManager.Instance.playerHealth += missingHelth;
+					}
+				}
+			}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

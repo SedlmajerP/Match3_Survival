@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private EnemyBoardManager eBoardManager;
 	public int playerMaxHealth = 100;
 	public int playerHealth;
+	public int numWaves = 1;
 
 	private void Awake()
 	{
@@ -49,22 +50,22 @@ public class GameManager : MonoBehaviour
 
 	private void HandleScoreScreen()
 	{
-		
+
 	}
 
 	private void HandlePlayerTurn()
 	{
-		
+
 	}
 
 	private void HandleEnemyTurn()
 	{
-		
+
 	}
 
 	private void HandleStartScreen()
 	{
-		
+
 	}
 
 	public enum GameState

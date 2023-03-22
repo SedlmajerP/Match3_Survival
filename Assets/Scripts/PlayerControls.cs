@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-	private TrAnimations destroyAnimation;
+	private TrAnimations trAnimations;
 
 	private PlayerBoardManager pBoardManager;
 	private MatchManager matchManager;
 	private ShootingManager shootingManager;
 	private GameObject otherElement;
+	private HealthBar healthBar;
+	private SpriteRenderer spriteRenderer;
 
 	//SpriteRenderer mySprite;
 	Color defaultColor;
@@ -37,7 +39,8 @@ public class PlayerControls : MonoBehaviour
 		pBoardManager = FindObjectOfType<PlayerBoardManager>();
 		matchManager = FindObjectOfType<MatchManager>();
 		shootingManager = FindObjectOfType<ShootingManager>();
-		destroyAnimation = FindObjectOfType<TrAnimations>();
+		trAnimations = FindObjectOfType<TrAnimations>();
+		healthBar = FindObjectOfType<HealthBar>();
 	}
 
 	//private void Start()
@@ -197,6 +200,10 @@ public class PlayerControls : MonoBehaviour
 			}
 			else
 			{
+				
+				
+				pBoardManager.HealedByNature();					
+				
 				//shootingManager.ShootThem();
 				yield return new WaitForSeconds(0.2f);
 
@@ -204,7 +211,7 @@ public class PlayerControls : MonoBehaviour
 
 				yield return new WaitForSeconds(0.1f);
 
-				destroyAnimation.PlayDestroyAnim();
+				trAnimations.PlayDestroyAnim();
 
 				yield return new WaitForSeconds(0.6f);
 

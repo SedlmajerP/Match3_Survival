@@ -29,7 +29,7 @@ public class TrAnimations : MonoBehaviour
         }
     }
 
-    public void PlayRefillAnim(Transform newElementTransform)
+    public void PlaySpawnAnim(Transform newElementTransform)
     {
 		newElementTransform.DOScale(1, 0.3f).OnComplete(() =>
         {
@@ -37,5 +37,8 @@ public class TrAnimations : MonoBehaviour
         });
     }
 
-    
+    public void PlayHealAnim()
+    {
+
+    }
 }

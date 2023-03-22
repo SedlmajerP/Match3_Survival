@@ -53,48 +53,6 @@ public class EnemyControls : MonoBehaviour
 		
 	}
 
-
-	private bool isRowFull(int rowNum)
-	{
-		int numOfEnemies = 0;
-		for (int x = 0; x < eBoardManager.width; x++)
-		{
-			if (eBoardManager.allEnemyArray[x, rowNum] != null || eBoardManager.tempEnemyPosArr[x, rowNum] != null)
-			{
-				numOfEnemies++;
-			}
-		}
-		if (numOfEnemies < eBoardManager.width - 1)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	private bool isTempRowFull(int rowNum)
-	{
-		int numOfEnemies = 0;
-		for (int x = 0; x < eBoardManager.width; x++)
-		{
-			if (eBoardManager.tempEnemyPosArr[x, rowNum] != null)
-			{
-				numOfEnemies++;
-			}
-		}
-		if (numOfEnemies < eBoardManager.width - 1)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-
 	private void MoveBasicEnemy()
 	{
 		if (CompareTag("EnemyBasic"))
@@ -130,13 +88,13 @@ public class EnemyControls : MonoBehaviour
 		{
 			if (enemyLastRowAttack == false)
 			{
-				int randJumpColumn = Random.Range(0, eBoardManager.width - 1);
-				int randJumpRow = Random.Range(0, eBoardManager.height - 1);
+				int randJumpColumn = Random.Range(0, eBoardManager.width-1);
+				int randJumpRow = Random.Range(0, eBoardManager.height-1);
 
 				while (eBoardManager.allEnemyArray[randJumpColumn, randJumpRow] != null)
 				{
-					randJumpColumn = Random.Range(0, eBoardManager.width - 1);
-					randJumpRow = Random.Range(0, eBoardManager.height - 1);
+					randJumpColumn = Random.Range(0, eBoardManager.width-1);
+					randJumpRow = Random.Range(0, eBoardManager.height-1);
 				}
 
 				Vector2 jumpingEnemyNextPos = new Vector2(randJumpColumn, randJumpRow);
