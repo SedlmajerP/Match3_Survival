@@ -8,12 +8,15 @@ public class EnemyBoardManager : MonoBehaviour
 	[SerializeField] private List<GameObject> enemyList;
 	[SerializeField] private GameObject enemyBoard;
 	[SerializeField] private GameObject backgroundTile;
+	[SerializeField] private TrAnimations trAnimations;
 	public int enemyMaxHealth = 100;
 	public int enemyDamage = 20;
+	public int enemyProjectileDamage = 5;
 	public int width;
 	public int height;
 	public GameObject [,] allEnemyArray;
-	public GameObject[,] tempEnemyPosArr; 
+	public GameObject[,] tempEnemyPosArr;
+	
 
 
 	private void Awake()
@@ -63,6 +66,9 @@ public class EnemyBoardManager : MonoBehaviour
 				spawnedEnemy.GetComponent<EnemyControls>().row = height - 1;
 
 				allEnemyArray[randomColumn, height-1] = spawnedEnemy;
+				Transform spawnedEnemyTr = spawnedEnemy.GetComponent<Transform>();
+				spawnedEnemyTr.localScale = new Vector2(0, 0);
+				trAnimations.PlayRefillAnim(spawnedEnemyTr);
 
 			}
 		}
@@ -100,20 +106,26 @@ public class EnemyBoardManager : MonoBehaviour
 		}
 	}
 
-	public void resetTempEnemyPosArr()
+	public bool IsAnyoneFrozen()
 	{
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				tempEnemyPosArr[x, y] = null;
+
+				if (allEnemyArray[x, y].GetComponent<EnemyControls>().isFrozen == true)
+				{
+					return true;
+				}
+				
 			}
 		}
+		return false;
 	}
 
 
-
 	
+
 
 }
 

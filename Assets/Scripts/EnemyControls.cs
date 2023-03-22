@@ -8,12 +8,15 @@ using UnityEngine;
 public class EnemyControls : MonoBehaviour
 {
 	[SerializeField] private HealthBar healthBar;
+	[SerializeField] SpriteRenderer spriteRenderer;
 	private ShootingManager shootingManager;
 	private EnemyBoardManager eBoardManager;
 	public int column;
 	public int row;
 	public int health;
 	public bool enemyLastRowAttack = false;
+	public bool isFrozen = false;
+	private Color frozenColor = new Color(0f, 0f, 255f, 255f);
 
 	private void Awake()
 	{
@@ -31,10 +34,23 @@ public class EnemyControls : MonoBehaviour
 
 	private IEnumerator MoveAll()
 	{
-		MoveBasicEnemy();
-		shootingManager.JumpingEnemyShoot(this.gameObject);
-		MoveJumpingEnemy();
-		yield break;
+		if (isFrozen == false)
+		{
+			enemyAttack();
+			yield return new WaitForSeconds(0.6f);
+			shootingManager.EnemyShoot(this.gameObject);
+			yield return new WaitForSeconds(0.6f);
+
+			MoveBasicEnemy();
+			moveShootingEnemy();
+			MoveJumpingEnemy();
+
+			
+		}
+		yield return new WaitForSeconds(1.3f);
+		isFrozen = false;
+			spriteRenderer.color = Color.white;
+		
 	}
 
 
@@ -81,7 +97,7 @@ public class EnemyControls : MonoBehaviour
 
 	private void MoveBasicEnemy()
 	{
-		if (CompareTag("EnemyBasic") || CompareTag("EnemyShooting"))
+		if (CompareTag("EnemyBasic"))
 		{
 			if (enemyLastRowAttack == false)
 			{
@@ -147,6 +163,33 @@ public class EnemyControls : MonoBehaviour
 
 	}
 
+	private void moveShootingEnemy()
+	{
+		if (CompareTag("EnemyShooting"))
+		{
+			if (enemyLastRowAttack == false)
+			{
+				Vector2 basicEnemyNextPos = new Vector2(column, row - 1);
+				if (eBoardManager.allEnemyArray[column, row - 1] == null)
+				{
+
+					eBoardManager.allEnemyArray[column, row] = null;
+					column = (int)basicEnemyNextPos.x;
+					row = (int)basicEnemyNextPos.y;
+					Debug.Log(basicEnemyNextPos);
+					eBoardManager.allEnemyArray[column, row] = this.gameObject;
+
+					transform.DOLocalMove(basicEnemyNextPos, 0.5f);
+
+					if (row == 0)
+					{
+						enemyLastRowAttack = true;
+					}
+				}
+			}
+		}
+	}
+
 	public void enemyAttack()
 	{
 		if (enemyLastRowAttack == true)
@@ -161,5 +204,14 @@ public class EnemyControls : MonoBehaviour
 			});
 		}
 
+	}
+
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.CompareTag("IceProjectile"))
+		{
+			isFrozen = true;
+			spriteRenderer.color = frozenColor;
+		}
 	}
 }

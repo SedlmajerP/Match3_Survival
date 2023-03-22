@@ -6,8 +6,5 @@ using UnityEngine;
 
 public class EnemyProjectile : MonoBehaviour
 {
-	public void moveProjectile()
-	{
-		transform.DOMove(new Vector2(0, 0), 0.5f);
-	}
+	
 }

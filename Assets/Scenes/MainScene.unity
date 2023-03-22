@@ -1090,6 +1090,7 @@ MonoBehaviour:
   - {fileID: 6617760767850356955, guid: d1854db51d493af478471a2f0fe7b70b, type: 3}
   enemyBoard: {fileID: 1946993112}
   backgroundTile: {fileID: 5955563915090111364, guid: 072f7ffdff301d24390fdb7a0b4e1210, type: 3}
+  trAnimations: {fileID: 142846148}
   enemyMaxHealth: 100
   enemyDamage: 5
   width: 0

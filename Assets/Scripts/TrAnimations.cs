@@ -31,9 +31,11 @@ public class TrAnimations : MonoBehaviour
 
     public void PlayRefillAnim(Transform newElementTransform)
     {
-		newElementTransform.DOScale(1, 0.2f).OnComplete(() =>
+		newElementTransform.DOScale(1, 0.3f).OnComplete(() =>
         {
-			newElementTransform.DOScale(0.8f, 0.1f);
+			newElementTransform.DOScale(0.8f, 0.2f);
         });
     }
+
+    
 }

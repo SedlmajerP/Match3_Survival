@@ -26,39 +26,48 @@ public class ShootingManager : MonoBehaviour
 
 				if (element.GetComponent<PlayerControls>().isMatched)
 				{
-					GameObject projectile = elementProjectiles.Find((proj) => proj.name == pBoardManager.allElementsArray[x, y].tag);
-					Vector2 projectilePos = pBoardManager.allElementsArray[x, y].GetComponent<Transform>().GetChild(0).position;
+					Transform elementTransform = element.GetComponent<Transform>();
+
+					GameObject projectile = elementProjectiles.Find((proj) => proj.name == element.tag);
+					Vector2 projectilePos = elementTransform.GetChild(0).position;
+
 					GameObject newProjectile = Instantiate(projectile, projectilePos, Quaternion.identity, this.transform);
+
+					Transform newProjTransform = newProjectile.GetComponent<Transform>();
+					ElementProjectile elementProjectile = newProjectile.GetComponent<ElementProjectile>();
+
+					newProjTransform.DOMove(new Vector2(elementTransform.position.x, 10), 1.5f);
+
 					if (newProjectile.tag == "FireProjectile")
 					{
-						newProjectile.GetComponent<ElementProjectile>().projectileDamage = fireDamage;
+						elementProjectile.projectileDamage = fireDamage;
 					}
 					else if (newProjectile.tag == "IceProjectile")
 					{
-						newProjectile.GetComponent<ElementProjectile>().projectileDamage = iceDamage;
+						elementProjectile.projectileDamage = iceDamage;
 					}
 					else if (newProjectile.tag == "NatureProjectile")
 					{
-						newProjectile.GetComponent<ElementProjectile>().projectileDamage = natureDamage;
+						elementProjectile.projectileDamage = natureDamage;
 					}
 					else if (newProjectile.tag == "EarthProjectile")
 					{
-						newProjectile.GetComponent<ElementProjectile>().projectileDamage = earthDamage;
+						elementProjectile.projectileDamage = earthDamage;
 					}
 				}
 			}
 		}
 	}
 
-	public void JumpingEnemyShoot(GameObject enemy)
+	public void EnemyShoot(GameObject enemy)
 	{
-		if (enemy.CompareTag("EnemyJumping"))
+		if (enemy.CompareTag("EnemyShooting"))
 		{
 			Transform enemyTransform = enemy.GetComponent<Transform>();
 			Vector2 projectileSpawnPos = enemyTransform.position;
 			GameObject newProjectile = Instantiate(jumpEnemyProjectile, projectileSpawnPos, Quaternion.identity, this.transform);
 			Transform newProjTransform = newProjectile.GetComponent<Transform>();
-			newProjTransform.DOLocalMove(new Vector2(enemyTransform.position.x, 0), 0.9f);
+			newProjTransform.DOLocalMove(new Vector2(enemyTransform.position.x, 0), 0.5f);
 		}
 
 	}

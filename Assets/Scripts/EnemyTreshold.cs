@@ -17,5 +17,13 @@ public class EnemyTreshold : MonoBehaviour
 			healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth);
 			Destroy(other.gameObject);
 		}
+
+		if (other.gameObject.CompareTag("EnemyProjectile"))
+		{
+			GameManager.Instance.playerHealth -= eBoardManager.enemyProjectileDamage;
+			healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth);
+			Destroy(other.gameObject);
+		}
 	}
+
 }

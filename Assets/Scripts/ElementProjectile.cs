@@ -12,12 +12,12 @@ public class ElementProjectile : MonoBehaviour
 
 	private void Awake()
 	{
-		origPosX = (int)transform.localPosition.x;
+		//origPosX = (int)transform.localPosition.x;
 	}
 	private void Update()
 	{
-		projectileRb.velocity = new Vector2(0, 10f);
-		if (transform.localPosition.y > 15)
+		//projectileRb.velocity = new Vector2(0, 10f);
+		if (transform.localPosition.y >= 10)
 		{
 			Destroy(this.gameObject);
 		}

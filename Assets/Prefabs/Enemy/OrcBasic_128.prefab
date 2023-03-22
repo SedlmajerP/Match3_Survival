@@ -125,9 +125,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 5395119330014018166}
+  spriteRenderer: {fileID: 8754212193037477769}
   column: 0
   row: 0
   health: 0
+  enemyLastRowAttack: 0
+  isFrozen: 0
 --- !u!50 &-8552755306924849988
 Rigidbody2D:
   serializedVersion: 4

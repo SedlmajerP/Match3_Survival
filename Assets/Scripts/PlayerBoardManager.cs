@@ -148,19 +148,21 @@ public class PlayerBoardManager : MonoBehaviour
 
 		GameManager.Instance.currentState = GameManager.GameState.EnemyTurn;
 
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.2f);
 
-		eBoardManager.allEnemiesAttack();
+		//eBoardManager.allEnemiesAttack();
 
-		yield return new WaitForSeconds(0.5f);
+		//yield return new WaitForSeconds(0.5f);
 
 		eBoardManager.MoveAllEnemies();
 		//eBoardManager.resetTempEnemyPosArr();
 
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(2.6f);
+
+
 		eBoardManager.GenerateFirstEnemies(3);
 
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.6f);
 
 		GameManager.Instance.currentState = GameManager.GameState.PlayerTurn;
 		elementsMoving = false;
