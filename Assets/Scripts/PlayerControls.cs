@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
@@ -25,7 +23,7 @@ public class PlayerControls : MonoBehaviour
 
 	private float dragAngle = 0;
 	private float minimalDrag = 1f;
-	public float movingSpeed = 15f;
+	public float movingSpeed = 12f;
 	public int column;
 	public int row;
 	private int previousColumn;
@@ -65,7 +63,7 @@ public class PlayerControls : MonoBehaviour
 	{
 		if (GameManager.Instance.currentState == GameManager.GameState.PlayerTurn)
 		{
-			transform.localScale = enlarge;
+			//transform.localScale = enlarge;
 			mouseDownPosition = GetMousePosition();
 		}
 	}
@@ -80,7 +78,7 @@ public class PlayerControls : MonoBehaviour
 
 
 		mouseUpPos = GetMousePosition();
-		transform.localScale = defaultSize;
+		//transform.localScale = defaultSize;
 		if (pBoardManager.elementsMoving == false)
 		{
 			CalculateAngle();

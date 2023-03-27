@@ -1,31 +1,35 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 	public GameState currentState = GameState.PlayerTurn;
-	[SerializeField] private PlayerBoardManager pBoardManager;
-	[SerializeField] private EnemyBoardManager eBoardManager;
 	public int playerMaxHealth = 100;
 	public int playerHealth;
 	public int numWaves = 1;
+	public int maxWaves = 0;
 
 	private void Awake()
 	{
+
+		if (GameManager.Instance != null)
+		{
+			Destroy(gameObject);
+			return;
+
+		}
 		Instance = this;
+		DontDestroyOnLoad(this.gameObject);
+		maxWaves = PlayerPrefs.GetInt("maxWaves");
 	}
 	private void Start()
 	{
 		UpdateGameState(GameState.PlayerTurn);
 		playerHealth = playerMaxHealth;
-
-		pBoardManager.GeneratePlayerBoard();
-		eBoardManager.GenerateBackGroundTiles();
-		eBoardManager.GenerateFirstEnemies(5);
 	}
+
+	
 
 	public void UpdateGameState(GameState newState)
 	{
@@ -48,6 +52,15 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	public void setMaxWaves()
+	{
+		numWaves++;
+
+		if (numWaves > maxWaves)
+		{
+			maxWaves = numWaves-1;
+		}
+	}
 	private void HandleScoreScreen()
 	{
 
@@ -77,4 +90,15 @@ public class GameManager : MonoBehaviour
 	}
 
 
+
+	public void LoadMainScene()
+	{
+		SceneManager.LoadScene("MainScene");
+	}
+
+	public void LoadMainMenu()
+	{
+		SceneManager.LoadScene("StartScreen");
+	}
 }
+

@@ -1,11 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using System.Xml.Linq;
-using UnityEditor.Experimental.GraphView;
-using System.Net;
-using UnityEditorInternal;
 
 public class PlayerBoardManager : MonoBehaviour
 {
@@ -17,7 +12,7 @@ public class PlayerBoardManager : MonoBehaviour
 	[SerializeField] private EnemyBoardManager eBoardManager;
 	[SerializeField] private HealthBar healthBar;
 	[SerializeField] private int healAmount = 5;
-	[SerializeField] private WavesText wavesText;
+	[SerializeField] private MainUI mainUI;
 	public bool elementsMoving = false;
 
 
@@ -33,6 +28,7 @@ public class PlayerBoardManager : MonoBehaviour
 	private void Start()
 	{
 		allElementsArray = new GameObject[width, height];
+		GeneratePlayerBoard();
 	}
 
 
@@ -134,9 +130,6 @@ public class PlayerBoardManager : MonoBehaviour
 			yield break;
 		}
 
-
-
-
 		yield return new WaitForSeconds(0.2f);
 
 		GameManager.Instance.currentState = GameManager.GameState.EnemyTurn;
@@ -144,16 +137,16 @@ public class PlayerBoardManager : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 
 		eBoardManager.MoveAllEnemies();
-
+		
 		yield return new WaitForSeconds(2.8f);
-
-		eBoardManager.GenerateFirstEnemies(3);
-
-
+		eBoardManager.enemyList = new List<GameObject>();
+		eBoardManager.GenerateEnemies(3, GameManager.Instance.numWaves);
 
 		yield return new WaitForSeconds(0.6f);
-		GameManager.Instance.numWaves++;
-		wavesText.UpdateWavesText();
+
+		GameManager.Instance.setMaxWaves();
+		PlayerPrefs.SetInt("maxWaves", GameManager.Instance.maxWaves);
+		mainUI.UpdateWavesText();
 
 		GameManager.Instance.currentState = GameManager.GameState.PlayerTurn;
 		elementsMoving = false;
@@ -234,7 +227,7 @@ public class PlayerBoardManager : MonoBehaviour
 					if (missingHelth >= healAmount)
 					{
 						GameManager.Instance.playerHealth += healAmount;
-						healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth);
+						healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth, "Player");
 					}
 					else if (missingHelth < healAmount && missingHelth != 0)
 					{
@@ -246,6 +239,8 @@ public class PlayerBoardManager : MonoBehaviour
 
 		}
 	}
+
+	
 }
 
 

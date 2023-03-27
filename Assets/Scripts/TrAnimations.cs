@@ -1,6 +1,4 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TrAnimations : MonoBehaviour
@@ -31,9 +29,9 @@ public class TrAnimations : MonoBehaviour
 
     public void PlaySpawnAnim(Transform newElementTransform)
     {
-		newElementTransform.DOScale(1, 0.3f).OnComplete(() =>
+		newElementTransform.DOScale(1.1f, 0.3f).OnComplete(() =>
         {
-			newElementTransform.DOScale(0.8f, 0.2f);
+			newElementTransform.DOScale(0.9f, 0.2f);
         });
     }
 
