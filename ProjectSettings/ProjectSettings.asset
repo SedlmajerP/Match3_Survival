@@ -162,7 +162,7 @@ PlayerSettings:
   overrideDefaultApplicationIdentifier: 0
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19
-  AndroidTargetSdkVersion: 33
+  AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
@@ -271,7 +271,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 0df8bf76b6345d74b97d315e921aa972, type: 3}
+      m_Icon: {fileID: 2800000, guid: 028f885e0d390504eb1e14ba5576d39e, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

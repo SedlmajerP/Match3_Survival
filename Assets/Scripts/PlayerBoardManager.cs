@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,10 +47,17 @@ public class PlayerBoardManager : MonoBehaviour
 					randomIndex = Random.Range(0, elementList.Count);
 				}
 				GameObject spawnedTile = Instantiate(elementList[randomIndex], spawnLoacation, Quaternion.identity, playerBoard.transform);
+
+				Transform tileTransform = spawnedTile.GetComponent<Transform>();
+
+				tileTransform.localScale = Vector3.zero;
+				animations.PlaySpawnAnim(tileTransform);
+
 				spawnedTile.GetComponent<PlayerControls>().column = x;
 				spawnedTile.GetComponent<PlayerControls>().row = y;
 
 				spawnedTile.name = $"({x},{y})";
+
 				allElementsArray[x, y] = spawnedTile;
 			}
 		}

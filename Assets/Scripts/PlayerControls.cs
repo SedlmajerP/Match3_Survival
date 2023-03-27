@@ -61,7 +61,7 @@ public class PlayerControls : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		if (GameManager.Instance.currentState == GameManager.GameState.PlayerTurn)
+		if (pBoardManager.elementsMoving == false)
 		{
 			//transform.localScale = enlarge;
 			mouseDownPosition = GetMousePosition();
@@ -77,10 +77,10 @@ public class PlayerControls : MonoBehaviour
 	{
 
 
-		mouseUpPos = GetMousePosition();
+		
 		//transform.localScale = defaultSize;
 		if (pBoardManager.elementsMoving == false)
-		{
+		{	mouseUpPos = GetMousePosition();
 			CalculateAngle();
 		}
 
