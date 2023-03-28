@@ -52,20 +52,8 @@ public class PlayerControls : MonoBehaviour
 
 	private void Update()
 	{
-
-
-		MovingElements();
 		matchManager.GetMatches();
-
-	}
-
-	private void OnMouseDown()
-	{
-		if (pBoardManager.elementsMoving == false)
-		{
-			//transform.localScale = enlarge;
-			mouseDownPosition = GetMousePosition();
-		}
+		MovingElements();
 	}
 
 	private Vector2 GetMousePosition()
@@ -73,17 +61,22 @@ public class PlayerControls : MonoBehaviour
 		return Camera.main.ScreenToWorldPoint(Input.mousePosition);
 	}
 
+	private void OnMouseDown()
+	{
+		if (pBoardManager.elementsMoving == false)
+		{
+			mouseDownPosition = GetMousePosition();
+		}
+	}
+
 	private void OnMouseUp()
 	{
-
-
-		
-		//transform.localScale = defaultSize;
 		if (pBoardManager.elementsMoving == false)
-		{	mouseUpPos = GetMousePosition();
+		{
+
+			mouseUpPos = GetMousePosition();
 			CalculateAngle();
 		}
-
 	}
 
 	private void MovingElements()
@@ -93,6 +86,7 @@ public class PlayerControls : MonoBehaviour
 
 		if (Mathf.Abs(objectOrigPosY - transform.localPosition.y) > 0.1f)
 		{
+			pBoardManager.elementsMoving = true;
 			tempPos = new Vector2(transform.localPosition.x, objectOrigPosY);
 			transform.localPosition = Vector2.Lerp(transform.localPosition, tempPos, movingSpeed * Time.deltaTime);
 
@@ -105,11 +99,11 @@ public class PlayerControls : MonoBehaviour
 		{
 			tempPos = new Vector2(transform.localPosition.x, objectOrigPosY);
 			transform.localPosition = tempPos;
-
-
 		}
 		if (Mathf.Abs(objectOrigPosX - transform.localPosition.x) > 0.1f)
 		{
+			pBoardManager.elementsMoving = true;
+
 			tempPos = new Vector2(objectOrigPosX, transform.localPosition.y);
 			transform.localPosition = Vector2.Lerp(transform.localPosition, tempPos, movingSpeed * Time.deltaTime);
 
@@ -124,7 +118,6 @@ public class PlayerControls : MonoBehaviour
 		{
 			tempPos = new Vector2(objectOrigPosX, transform.localPosition.y);
 			transform.localPosition = tempPos;
-
 		}
 
 
@@ -179,7 +172,6 @@ public class PlayerControls : MonoBehaviour
 			column += 1;
 			//RIGHT
 		}
-		pBoardManager.elementsMoving = true;
 		StartCoroutine(CheckMachCor());
 	}
 
@@ -194,15 +186,14 @@ public class PlayerControls : MonoBehaviour
 				otherElement.GetComponent<PlayerControls>().column = column;
 				row = previousRow;
 				column = previousColumn;
+
+				yield return new WaitForSeconds(0.3f);
 				pBoardManager.elementsMoving = false;
 			}
 			else
 			{
-				
-				
-				pBoardManager.HealedByNature();					
-				
-				//shootingManager.ShootThem();
+				pBoardManager.HealedByNature();
+
 				yield return new WaitForSeconds(0.2f);
 
 				shootingManager.ShootElemets();
@@ -220,7 +211,7 @@ public class PlayerControls : MonoBehaviour
 
 
 		}
-		otherElement = null;
+		//otherElement = null;
 	}
 
 
