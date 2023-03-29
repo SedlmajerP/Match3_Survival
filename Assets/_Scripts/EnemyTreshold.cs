@@ -9,7 +9,6 @@ public class EnemyTreshold : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
-		Debug.Log(other.tag);
 		if (other.gameObject.CompareTag("EnemyBasic") || other.gameObject.CompareTag("EnemyJumping") || other.gameObject.CompareTag("EnemyShooting"))
 		{
 			GameManager.Instance.playerHealth -= eBoardManager.enemyDamage;

@@ -9,14 +9,8 @@ public class PlayerControls : MonoBehaviour
 	private MatchManager matchManager;
 	private ShootingManager shootingManager;
 	private GameObject otherElement;
-	private HealthBar healthBar;
-	private SpriteRenderer spriteRenderer;
 
-	//SpriteRenderer mySprite;
-	Color defaultColor;
 
-	private Vector3 enlarge = new Vector3(1f, 1f, 0);
-	private Vector3 defaultSize = new Vector3(0.8f, 0.8f, 0);
 	private Vector2 mouseDownPosition;
 	private Vector2 mouseUpPos;
 	private Vector2 tempPos;
@@ -38,21 +32,11 @@ public class PlayerControls : MonoBehaviour
 		matchManager = FindObjectOfType<MatchManager>();
 		shootingManager = FindObjectOfType<ShootingManager>();
 		trAnimations = FindObjectOfType<TrAnimations>();
-		healthBar = FindObjectOfType<HealthBar>();
 	}
-
-	//private void Start()
-	//{
-
-	//	pBoardManager = FindObjectOfType<PlayerBoardManager>();
-	//	matchManager = FindObjectOfType<MatchManager>();
-	//	shootingManager = FindObjectOfType<ShootingManager>();
-	//	destroyAnimation = GetComponent<DestroyAnimation>();
-	//}
 
 	private void Update()
 	{
-		matchManager.GetMatches();
+		//matchManager.GetMatches();
 		MovingElements();
 	}
 
@@ -90,10 +74,14 @@ public class PlayerControls : MonoBehaviour
 			tempPos = new Vector2(transform.localPosition.x, objectOrigPosY);
 			transform.localPosition = Vector2.Lerp(transform.localPosition, tempPos, movingSpeed * Time.deltaTime);
 
+
 			if (pBoardManager.allElementsArray[column, row] != this.gameObject)
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
+			matchManager.GetMatches();
+
+
 		}
 		else
 		{
@@ -111,6 +99,7 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
+			matchManager.GetMatches();
 
 		}
 		else
@@ -177,7 +166,7 @@ public class PlayerControls : MonoBehaviour
 
 	IEnumerator CheckMachCor()
 	{
-		yield return new WaitForSeconds(0.2f);
+		yield return new WaitForSeconds(0.3f);
 		if (otherElement != null)
 		{
 			if (!isMatched && !otherElement.GetComponent<PlayerControls>().isMatched)
@@ -193,13 +182,7 @@ public class PlayerControls : MonoBehaviour
 			else
 			{
 				pBoardManager.HealedByNature();
-
-				yield return new WaitForSeconds(0.2f);
-
 				shootingManager.ShootElemets();
-
-				yield return new WaitForSeconds(0.1f);
-
 				trAnimations.PlayDestroyAnim();
 
 				yield return new WaitForSeconds(0.6f);

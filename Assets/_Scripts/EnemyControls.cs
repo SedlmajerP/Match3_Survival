@@ -8,9 +8,11 @@ public class EnemyControls : MonoBehaviour
 	[SerializeField] SpriteRenderer spriteRenderer;
 	private ShootingManager shootingManager;
 	private EnemyBoardManager eBoardManager;
+
 	public int column;
 	public int row;
 	public int health;
+
 	public bool enemyLastRowAttack = false;
 	public bool isFrozen = false;
 	private Color frozenColor = new Color(0f, 0f, 255f, 255f);
@@ -63,7 +65,6 @@ public class EnemyControls : MonoBehaviour
 					eBoardManager.allEnemyArray[column, row] = null;
 					column = (int)basicEnemyNextPos.x;
 					row = (int)basicEnemyNextPos.y;
-					Debug.Log(basicEnemyNextPos);
 					eBoardManager.allEnemyArray[column, row] = this.gameObject;
 
 					transform.DOLocalMove(basicEnemyNextPos, 0.5f);
@@ -99,7 +100,6 @@ public class EnemyControls : MonoBehaviour
 				eBoardManager.allEnemyArray[column, row] = null;
 				column = (int)jumpingEnemyNextPos.x;
 				row = (int)jumpingEnemyNextPos.y;
-				Debug.Log(jumpingEnemyNextPos);
 				eBoardManager.allEnemyArray[column, row] = this.gameObject;
 				transform.DOLocalMove(jumpingEnemyNextPos, 0.8f);
 				transform.DOScale(1.5f, 0.4f).OnComplete(() =>
@@ -131,7 +131,6 @@ public class EnemyControls : MonoBehaviour
 					eBoardManager.allEnemyArray[column, row] = null;
 					column = (int)basicEnemyNextPos.x;
 					row = (int)basicEnemyNextPos.y;
-					Debug.Log(basicEnemyNextPos);
 					eBoardManager.allEnemyArray[column, row] = this.gameObject;
 
 					transform.DOLocalMove(basicEnemyNextPos, 0.5f);

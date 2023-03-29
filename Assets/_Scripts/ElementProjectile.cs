@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class ElementProjectile : MonoBehaviour
 {
-	[SerializeField] private Rigidbody2D projectileRb;
-	private HealthBar healthBar;
 	public int projectileDamage;
 
 	private void Update()
@@ -24,7 +22,7 @@ public class ElementProjectile : MonoBehaviour
 		{
 
 			EnemyControls enemyControls = enemy.gameObject.GetComponent<EnemyControls>();
-			healthBar = enemy.gameObject.GetComponentInChildren<HealthBar>();
+			HealthBar healthBar = enemy.gameObject.GetComponentInChildren<HealthBar>();
 
 			Destroy(this.gameObject);
 			enemyControls.health -= projectileDamage;

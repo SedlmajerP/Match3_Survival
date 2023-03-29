@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class ShootingManager : MonoBehaviour
 {
+	[Header("Managers")]
 	[SerializeField] private List<GameObject> elementProjectiles;
 	[SerializeField] private GameObject jumpEnemyProjectile;
 	[SerializeField] private PlayerBoardManager pBoardManager;
 	[SerializeField] private EnemyBoardManager enemyBoardManager;
+
+	[Header("Damage of Elements")]
 	public int fireDamage = 50;
 	public int iceDamage = 30;
 	public int natureDamage = 30;

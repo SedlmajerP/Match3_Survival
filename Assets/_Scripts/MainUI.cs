@@ -11,7 +11,6 @@ public class MainUI : MonoBehaviour
 	[SerializeField] private TMP_Text playScreenWavesText;
 	[SerializeField] private TMP_Text looseWavesText;
 	[SerializeField] private TMP_Text looseMaxWavesText;
-
 	[SerializeField] private GameObject loosePanel;
 	
 

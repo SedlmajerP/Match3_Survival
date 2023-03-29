@@ -54,7 +54,6 @@ public class EnemyBoardManager : MonoBehaviour
 			for (int y = 0; y < height; y++)
 			{
 				bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
-				Debug.Log($"{x},{y}");
 				if (isOffset == true)
 				{
 					tileRenderer.color = offsetTileColor;
@@ -131,9 +130,26 @@ public class EnemyBoardManager : MonoBehaviour
 		{
 			for (int y = 0; y < height; y++)
 			{
+				if (allEnemyArray[x, y]!= null && allEnemyArray[x, y].GetComponent<EnemyControls>().isFrozen == true) 
+				{ 
+				
+					return true;
+				}
 
-				if (allEnemyArray[x, y].GetComponent<EnemyControls>().isFrozen == true)
+			}
+		}
+		return false;
+	}
+
+	public bool JumpingEnemyOnBoard()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (allEnemyArray[x, y] != null && allEnemyArray[x, y].CompareTag("EnemyJumping"))
 				{
+
 					return true;
 				}
 

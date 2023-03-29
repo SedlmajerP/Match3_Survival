@@ -12,15 +12,13 @@ public class PlayerBoardManager : MonoBehaviour
 	[SerializeField] private TrAnimations animations;
 	[SerializeField] private EnemyBoardManager eBoardManager;
 	[SerializeField] private HealthBar healthBar;
-	[SerializeField] private int healAmount = 5;
 	[SerializeField] private MainUI mainUI;
+
+	[SerializeField] private int healAmount = 5;
+
 	public bool elementsMoving = false;
-
-
-
 	public int width = 6;
 	public int height = 6;
-
 
 	public GameObject[,] allElementsArray;
 
@@ -63,7 +61,8 @@ public class PlayerBoardManager : MonoBehaviour
 		}
 	}
 
-	private bool MatchesAt(int column, int row, GameObject element) //For starting with NO MATCHES in GeneratePlayerBoard()
+	//For starting with NO MATCHES in GeneratePlayerBoard()
+	private bool MatchesAt(int column, int row, GameObject element) 
 	{
 		if (column > 1)
 		{
@@ -118,14 +117,14 @@ public class PlayerBoardManager : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 
 		RefillElements();
-
+		matchManager.GetMatches();
 		yield return new WaitForSeconds(0.5f);
-
+		
 		while (IsMatchedAt())
 		{
 			elementsMoving = true;
 
-			yield return new WaitForSeconds(0.2f);
+			//yield return new WaitForSeconds(0.2f);
 
 			HealedByNature();
 			shootingManager.ShootElemets();
@@ -144,8 +143,10 @@ public class PlayerBoardManager : MonoBehaviour
 
 		yield return new WaitForSeconds(0.2f);
 
+		Debug.Log("Frozen" + eBoardManager.IsAnyoneFrozen());
+		Debug.Log("Jumping Enemy" + eBoardManager.JumpingEnemyOnBoard());
 		eBoardManager.MoveAllEnemies();
-		
+
 		yield return new WaitForSeconds(2.8f);
 		eBoardManager.enemyList = new List<GameObject>();
 		eBoardManager.GenerateEnemies(3, GameManager.Instance.numWaves);
@@ -248,7 +249,7 @@ public class PlayerBoardManager : MonoBehaviour
 		}
 	}
 
-	
+
 }
 
 

@@ -17,7 +17,7 @@ public class MatchManager : MonoBehaviour
 	}
 	IEnumerator GetMatchesCor()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.0001f);
 		for (int x = 0; x < pBoardManager.width; x++)
 		{
 			for (int y = 0; y < pBoardManager.height; y++)
