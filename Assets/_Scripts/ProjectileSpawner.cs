@@ -2,11 +2,11 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingManager : MonoBehaviour
+public class ProjectileSpawner : MonoBehaviour
 {
 	[Header("Managers")]
 	[SerializeField] private List<GameObject> elementProjectiles;
-	[SerializeField] private GameObject jumpEnemyProjectile;
+	[SerializeField] private GameObject enemyProjectile;
 	[SerializeField] private PlayerBoardManager pBoardManager;
 	[SerializeField] private EnemyBoardManager enemyBoardManager;
 
@@ -60,16 +60,29 @@ public class ShootingManager : MonoBehaviour
 		}
 	}
 
-	public void EnemyShoot(GameObject enemy)
+	public void EnemyShoot()
 	{
-		if (enemy.CompareTag("EnemyShooting"))
-		{
-			Transform enemyTransform = enemy.GetComponent<Transform>();
-			Vector2 projectileSpawnPos = enemyTransform.position;
-			GameObject newProjectile = Instantiate(jumpEnemyProjectile, projectileSpawnPos, Quaternion.identity, this.transform);
-			Transform newProjTransform = newProjectile.GetComponent<Transform>();
-			newProjTransform.DOLocalMove(new Vector2(enemyTransform.position.x, 0), 0.5f);
-		}
 
+
+		for (int x = 0; x < enemyBoardManager.width; x++)
+		{
+			for (int y = 0; y < enemyBoardManager.height; y++)
+			{
+				if (enemyBoardManager.allEnemyArray[x, y] != null)
+				{
+					GameObject enemy = enemyBoardManager.allEnemyArray[x, y];
+
+					if (enemy.CompareTag("EnemyShooting"))
+					{
+						Transform enemyTransform = enemy.GetComponent<Transform>();
+						Vector2 projectileSpawnPos = enemyTransform.position;
+						GameObject newProjectile = Instantiate(enemyProjectile, projectileSpawnPos, Quaternion.identity, this.transform);
+						Transform newProjTransform = newProjectile.GetComponent<Transform>();
+						newProjTransform.DOLocalMove(new Vector2(enemyTransform.position.x, 0), 0.5f);
+					}
+				}
+
+			}
+		}
 	}
 }

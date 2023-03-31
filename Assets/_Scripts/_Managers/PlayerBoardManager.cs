@@ -7,14 +7,19 @@ public class PlayerBoardManager : MonoBehaviour
 {
 	[SerializeField] private GameObject playerBoard;
 	[SerializeField] private List<GameObject> elementList;
-	[SerializeField] private MatchManager matchManager;
-	[SerializeField] private ShootingManager shootingManager;
+	[SerializeField] private MatchFinder matchFinder;
+	[SerializeField] private ProjectileSpawner projectileSpawner;
 	[SerializeField] private TrAnimations animations;
 	[SerializeField] private EnemyBoardManager eBoardManager;
 	[SerializeField] private HealthBar healthBar;
 	[SerializeField] private MainUI mainUI;
 
 	[SerializeField] private int healAmount = 5;
+	[SerializeField] public int playerMaxHealth = 100;
+	[SerializeField] public int playerHealth;
+
+
+
 
 	public bool elementsMoving = false;
 	public int width = 6;
@@ -24,8 +29,9 @@ public class PlayerBoardManager : MonoBehaviour
 
 
 
-	private void Start()
+	public void Init()
 	{
+		playerHealth = playerMaxHealth;
 		allElementsArray = new GameObject[width, height];
 		GeneratePlayerBoard();
 	}
@@ -85,7 +91,7 @@ public class PlayerBoardManager : MonoBehaviour
 	{
 		if (allElementsArray[column, row].GetComponent<PlayerControls>().isMatched)
 		{
-			matchManager.matchCounter.Remove(allElementsArray[column, row]);
+			matchFinder.matchCounter.Remove(allElementsArray[column, row]);
 			Destroy(allElementsArray[column, row]);
 			allElementsArray[column, row] = null;
 		}
@@ -117,7 +123,7 @@ public class PlayerBoardManager : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 
 		RefillElements();
-		matchManager.GetMatches();
+		StartCoroutine(matchFinder.FindMatches());
 		yield return new WaitForSeconds(0.5f);
 		
 		while (IsMatchedAt())
@@ -127,8 +133,8 @@ public class PlayerBoardManager : MonoBehaviour
 			//yield return new WaitForSeconds(0.2f);
 
 			HealedByNature();
-			shootingManager.ShootElemets();
-			animations.PlayDestroyAnim();
+			projectileSpawner.ShootElemets();
+			PlayDestroyAnim();
 
 			yield return new WaitForSeconds(0.5f);
 
@@ -137,29 +143,7 @@ public class PlayerBoardManager : MonoBehaviour
 			yield break;
 		}
 
-		yield return new WaitForSeconds(0.2f);
-
-		GameManager.Instance.currentState = GameManager.GameState.EnemyTurn;
-
-		yield return new WaitForSeconds(0.2f);
-
-		Debug.Log("Frozen" + eBoardManager.IsAnyoneFrozen());
-		Debug.Log("Jumping Enemy" + eBoardManager.JumpingEnemyOnBoard());
-		eBoardManager.MoveAllEnemies();
-
-		yield return new WaitForSeconds(2.8f);
-		eBoardManager.enemyList = new List<GameObject>();
-		eBoardManager.GenerateEnemies(3, GameManager.Instance.numWaves);
-
-		yield return new WaitForSeconds(0.6f);
-
-		GameManager.Instance.setMaxWaves();
-		PlayerPrefs.SetInt("maxWaves", GameManager.Instance.maxWaves);
-		mainUI.UpdateWavesText();
-
-		GameManager.Instance.currentState = GameManager.GameState.PlayerTurn;
-		elementsMoving = false;
-
+		StartCoroutine(eBoardManager.EnemyTurnCor());
 	}
 
 	private void CollapseRow()
@@ -232,19 +216,41 @@ public class PlayerBoardManager : MonoBehaviour
 			{
 				if (allElementsArray[x, y].GetComponent<PlayerControls>().isMatched && allElementsArray[x, y].CompareTag("Nature"))
 				{
-					int missingHelth = GameManager.Instance.playerMaxHealth - GameManager.Instance.playerHealth;
+					int missingHelth = playerMaxHealth - playerHealth;
 					if (missingHelth >= healAmount)
 					{
-						GameManager.Instance.playerHealth += healAmount;
-						healthBar.UpdateHealthBar(GameManager.Instance.playerHealth, GameManager.Instance.playerMaxHealth, "Player");
+						playerHealth += healAmount;
+						healthBar.UpdateHealthBar(playerHealth,playerMaxHealth, "Player");
 					}
 					else if (missingHelth < healAmount && missingHelth != 0)
 					{
-						GameManager.Instance.playerHealth += missingHelth;
+						playerHealth += missingHelth;
 					}
 				}
 			}
 
+
+		}
+	}
+
+	public void PlayDestroyAnim()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (allElementsArray[x, y].GetComponent<PlayerControls>().isMatched)
+				{
+					Transform elementTranform = allElementsArray[x, y].GetComponent<Transform>();
+					if (elementTranform != null)
+					{
+						elementTranform.DOScale(1, 0.2f).OnComplete(() =>
+						{
+							elementTranform.DOScale(0, 0.2f);
+						});
+					}
+				}
+			}
 
 		}
 	}

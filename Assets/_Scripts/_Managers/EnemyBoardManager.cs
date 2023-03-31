@@ -1,3 +1,5 @@
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +8,8 @@ public class EnemyBoardManager : MonoBehaviour
 	[Header("Managers")]
 	[SerializeField] private PlayerBoardManager pBoardManager;
 	[SerializeField] private TrAnimations trAnimations;
+	[SerializeField] private MainUI mainUI;
+	[SerializeField] private ProjectileSpawner projectileSpawner;
 
 
 
@@ -16,7 +20,7 @@ public class EnemyBoardManager : MonoBehaviour
 	public int enemyMaxHealth = 100;
 	public int enemyDamage = 20;
 	public int enemyProjectileDamage = 5;
-	[HideInInspector] public List<GameObject> enemyList;
+	[SerializeField] private List<GameObject> enemyList;
 
 	[Header("BackGroundTile")]
 	[SerializeField] private GameObject backgroundTile;
@@ -24,7 +28,7 @@ public class EnemyBoardManager : MonoBehaviour
 	[SerializeField] Color tileColor;
 	[SerializeField] Color offsetTileColor;
 
-	
+
 	public int width;
 	public int height;
 
@@ -32,7 +36,7 @@ public class EnemyBoardManager : MonoBehaviour
 
 
 
-	private void Awake()
+	public void Init()
 	{
 		width = pBoardManager.width;
 		height = pBoardManager.height;
@@ -40,11 +44,6 @@ public class EnemyBoardManager : MonoBehaviour
 		enemyList = new List<GameObject>();
 		GenerateBackGroundTiles();
 		GenerateEnemies(3, 1);
-	}
-
-	private void Start()
-	{
-
 	}
 
 	public void GenerateBackGroundTiles()
@@ -99,7 +98,61 @@ public class EnemyBoardManager : MonoBehaviour
 		}
 	}
 
-	public void MoveAllEnemies()
+	public IEnumerator EnemyTurnCor()
+	{
+		yield return new WaitForSeconds(0.2f);
+
+		GameManager.Instance.currentState = GameManager.GameState.EnemyTurn;
+
+		yield return new WaitForSeconds(0.2f);
+
+		if (EnemyBoardClear() == false)
+		{
+			if (isAnyoneAttacking() == true)
+			{
+				allEnemiesAttack();
+				yield return new WaitForSeconds(0.6f);
+			}
+			if (EnemyTypeOnBoard("EnemyShooting") == true)
+			{
+				projectileSpawner.EnemyShoot();
+				yield return new WaitForSeconds(0.6f);
+			}
+
+			MoveAllEnemies();
+
+			if (EnemyTypeOnBoard("EnemyJumping") == true)
+			{
+				yield return new WaitForSeconds(0.8f);
+			}
+			else
+			{
+				yield return new WaitForSeconds(0.6f);
+
+			}
+
+			if (IsAnyoneFrozen() == true)
+			{
+				yield return new WaitForSeconds(0.3f);
+
+			}
+		}
+
+		enemyList.Clear();
+		GenerateEnemies(3, GameManager.Instance.numWaves);
+
+		yield return new WaitForSeconds(0.6f);
+
+		GameManager.Instance.setMaxWaves();
+		PlayerPrefs.SetInt("maxWaves", GameManager.Instance.maxWaves);
+		mainUI.UpdateWavesText();
+
+		GameManager.Instance.currentState = GameManager.GameState.PlayerTurn;
+		pBoardManager.elementsMoving = false;
+
+	}
+
+	private void MoveAllEnemies()
 	{
 		for (int x = 0; x < width; x++)
 		{
@@ -113,7 +166,7 @@ public class EnemyBoardManager : MonoBehaviour
 		}
 	}
 
-	public void allEnemiesAttack()
+	private void allEnemiesAttack()
 	{
 		for (int x = 0; x < width; x++)
 		{
@@ -124,15 +177,15 @@ public class EnemyBoardManager : MonoBehaviour
 		}
 	}
 
-	public bool IsAnyoneFrozen()
+	private bool IsAnyoneFrozen()
 	{
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				if (allEnemyArray[x, y]!= null && allEnemyArray[x, y].GetComponent<EnemyControls>().isFrozen == true) 
-				{ 
-				
+				if (allEnemyArray[x, y] != null && allEnemyArray[x, y].GetComponent<EnemyControls>().isFrozen == true)
+				{
+
 					return true;
 				}
 
@@ -141,13 +194,45 @@ public class EnemyBoardManager : MonoBehaviour
 		return false;
 	}
 
-	public bool JumpingEnemyOnBoard()
+	private bool isAnyoneAttacking()
 	{
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				if (allEnemyArray[x, y] != null && allEnemyArray[x, y].CompareTag("EnemyJumping"))
+				if (allEnemyArray[x, y] != null && allEnemyArray[x, y].GetComponent<EnemyControls>().enemyLastRowAttack == true)
+				{
+
+					return true;
+				}
+
+			}
+		}
+		return false;
+	}
+
+	private bool EnemyBoardClear()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (allEnemyArray[x, y] != null)
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private bool EnemyTypeOnBoard(string enemyTag)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (allEnemyArray[x, y] != null && allEnemyArray[x, y].CompareTag(enemyTag))
 				{
 
 					return true;

@@ -47,7 +47,7 @@ public class MainUI : MonoBehaviour
 	public void LoadMainScene()
 	{
 		SceneManager.LoadScene("MainScene");
-		GameManager.Instance.playerHealth = GameManager.Instance.playerMaxHealth;
+		//playerBoardManager.playerHealth = playerBoardManager.playerMaxHealth;
 		GameManager.Instance.numWaves = 1;
 		Time.timeScale = 1.0f;
 

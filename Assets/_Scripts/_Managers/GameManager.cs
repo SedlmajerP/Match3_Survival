@@ -5,8 +5,6 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 	public GameState currentState = GameState.PlayerTurn;
-	public int playerMaxHealth = 100;
-	public int playerHealth;
 	public int numWaves = 1;
 	public int maxWaves = 0;
 
@@ -26,7 +24,7 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		UpdateGameState(GameState.PlayerTurn);
-		playerHealth = playerMaxHealth;
+		
 	}
 
 	

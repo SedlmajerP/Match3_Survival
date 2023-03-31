@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class PlayerControls : MonoBehaviour
 {
-	private TrAnimations trAnimations;
-
 	private PlayerBoardManager pBoardManager;
-	private MatchManager matchManager;
-	private ShootingManager shootingManager;
+	private MatchFinder matchFinder;
+	private ProjectileSpawner projectileSpawner;
 	private GameObject otherElement;
 
 
@@ -29,14 +27,12 @@ public class PlayerControls : MonoBehaviour
 	private void Awake()
 	{
 		pBoardManager = FindObjectOfType<PlayerBoardManager>();
-		matchManager = FindObjectOfType<MatchManager>();
-		shootingManager = FindObjectOfType<ShootingManager>();
-		trAnimations = FindObjectOfType<TrAnimations>();
+		matchFinder = FindObjectOfType<MatchFinder>();
+		projectileSpawner = FindObjectOfType<ProjectileSpawner>();
 	}
 
 	private void Update()
 	{
-		//matchManager.GetMatches();
 		MovingElements();
 	}
 
@@ -79,7 +75,7 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
-			matchManager.GetMatches();
+			StartCoroutine(matchFinder.FindMatches());
 
 
 		}
@@ -99,7 +95,7 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
-			matchManager.GetMatches();
+			StartCoroutine(matchFinder.FindMatches());
 
 		}
 		else
@@ -182,8 +178,8 @@ public class PlayerControls : MonoBehaviour
 			else
 			{
 				pBoardManager.HealedByNature();
-				shootingManager.ShootElemets();
-				trAnimations.PlayDestroyAnim();
+				projectileSpawner.ShootElemets();
+				pBoardManager.PlayDestroyAnim();
 
 				yield return new WaitForSeconds(0.6f);
 

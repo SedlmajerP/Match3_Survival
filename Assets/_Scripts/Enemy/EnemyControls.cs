@@ -6,7 +6,6 @@ public class EnemyControls : MonoBehaviour
 {
 	[SerializeField] private HealthBar healthBar;
 	[SerializeField] SpriteRenderer spriteRenderer;
-	private ShootingManager shootingManager;
 	private EnemyBoardManager eBoardManager;
 
 	public int column;
@@ -20,9 +19,7 @@ public class EnemyControls : MonoBehaviour
 	private void Awake()
 	{
 		eBoardManager = FindObjectOfType<EnemyBoardManager>();
-		shootingManager = FindObjectOfType<ShootingManager>();
 		health = eBoardManager.enemyMaxHealth;
-
 	}
 
 
@@ -35,18 +32,11 @@ public class EnemyControls : MonoBehaviour
 	{
 		if (isFrozen == false)
 		{
-			enemyAttack();
-			yield return new WaitForSeconds(0.6f);
-			shootingManager.EnemyShoot(this.gameObject);
-			yield return new WaitForSeconds(0.6f);
-
 			MoveBasicEnemy();
 			moveShootingEnemy();
 			MoveJumpingEnemy();
-
-			
 		}
-		yield return new WaitForSeconds(1.3f);
+		yield return new WaitForSeconds(0.8f);
 		isFrozen = false;
 			spriteRenderer.color = Color.white;
 		
@@ -146,7 +136,7 @@ public class EnemyControls : MonoBehaviour
 
 	public void enemyAttack()
 	{
-		if (enemyLastRowAttack == true)
+		if (enemyLastRowAttack == true && isFrozen == false)
 		{
 
 			transform.DOScale(1.1f, 0.2f).OnComplete(() =>
