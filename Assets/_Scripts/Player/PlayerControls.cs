@@ -75,7 +75,7 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
-			StartCoroutine(matchFinder.FindMatches());
+			StartCoroutine(matchFinder.FindMatches(pBoardManager.allElementsArray));
 
 
 		}
@@ -95,7 +95,7 @@ public class PlayerControls : MonoBehaviour
 			{
 				pBoardManager.allElementsArray[column, row] = this.gameObject;
 			}
-			StartCoroutine(matchFinder.FindMatches());
+			StartCoroutine(matchFinder.FindMatches(pBoardManager.allElementsArray));
 
 		}
 		else

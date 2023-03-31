@@ -123,7 +123,7 @@ public class PlayerBoardManager : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 
 		RefillElements();
-		StartCoroutine(matchFinder.FindMatches());
+		StartCoroutine(matchFinder.FindMatches(allElementsArray));
 		yield return new WaitForSeconds(0.5f);
 		
 		while (IsMatchedAt())
